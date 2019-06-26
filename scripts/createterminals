@@ -33,7 +33,7 @@ cat ${BASE}/../Dockerfile.openshift \
 | oc new-build \
   --name gotty \
   --source-image=gotty-builder \
-  --source-image-path=/opt/app-root/output/*:. \
+  --source-image-path=/opt/app-root/output/.:. \
   --dockerfile="-" \
   --allow-missing-imagestream-tags \
   --strategy=docker
