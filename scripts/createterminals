@@ -29,8 +29,6 @@ oc new-build \
 
 sleep 3
 
-ls -l ${BASE}/../Dockerfile.openshift
-
 cat ${BASE}/../Dockerfile.openshift \
 | oc new-build \
   --name gotty \
