@@ -1,0 +1,38 @@
+FROM golang:1.10.3 as builder
+
+# This Dockerfile is not used by OpenShift. Use this builds in Docker instead.
+# To build:
+# docker build --rm -t kwkoo/gotty -f Dockerfile.multistage .
+#
+# To run:
+# docker run -d -p 7500:8080 -e USER=user -e DEMO=/home/user -e OPTIONS="-c user:password" --name gotty kwkoo/gotty
+#
+
+ARG PREFIX=github.com/yudai
+ARG PACKAGE=gotty
+LABEL builder=true
+COPY . /go/src/${PREFIX}/${PACKAGE}/
+RUN set -x && \
+	cd /go/src/${PREFIX}/${PACKAGE}/ \
+    && \
+	CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /go/bin/${PACKAGE} .
+
+FROM centos:7
+LABEL maintainer="glug71@gmail.com"
+LABEL builder=false
+COPY --from=builder /go/bin/${PACKAGE} /usr/local/bin/
+COPY scripts/startgotty /usr/local/bin/
+
+RUN yum update -y \
+  && yum install -y git curl vim openssh-clients tmux \
+  && yum clean all -y \
+  && useradd -m -u 1001 -g 0 user \
+  && chown -R 0 /etc/passwd /home/user \
+  && chmod -R g=u /etc/passwd /home/user \
+  && echo "openshift" | passwd user --stdin
+
+USER 1001
+WORKDIR /home/user
+EXPOSE 8080
+
+ENTRYPOINT ["/usr/local/bin/startgotty"]
