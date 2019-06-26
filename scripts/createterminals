@@ -10,6 +10,10 @@ fi
 MAX=$1
 PROJ=terminals
 
+cd `dirname $0`
+BASE=`pwd`
+cd - >> /dev/null
+
 oc get project $PROJ &> /dev/null
 if [ "$?" -eq "0" ]; then
   oc project $PROJ >> /dev/null
@@ -25,11 +29,14 @@ oc new-build \
 
 sleep 3
 
-oc new-build \
+ls -l ${BASE}/../Dockerfile.openshift
+
+cat ${BASE}/../Dockerfile.openshift \
+| oc new-build \
   --name gotty \
   --source-image=gotty-builder \
-  --source-image-path=/opt/app-root/output:. \
-  --dockerfile='Dockerfile' \
+  --source-image-path=/opt/app-root/output/*:. \
+  --dockerfile="-" \
   --allow-missing-imagestream-tags \
   --strategy=docker
 
