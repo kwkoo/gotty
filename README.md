@@ -16,6 +16,9 @@ GoTTY is a simple command line tool that turns your CLI tools into web applicati
 
 ![Screenshot](https://raw.githubusercontent.com/yudai/gotty/master/screenshot.gif)
 
+**Note**: `scripts/createterminals` includes steps for building and running.
+You have to perform an `oc login` before executing `scripts/createterminals`.
+
 # Build
 
 ````
