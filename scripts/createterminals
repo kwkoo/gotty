@@ -23,12 +23,19 @@ fi
 
 set -e
 
+# Use the SCL Go CentOS builder image.
+# We have a custom assemble script in .s2i/bin/.
+#
 oc new-build \
   docker.io/centos/go-toolset-7-centos7~https://github.com/kwkoo/gotty.git \
   --name gotty-builder
 
 sleep 3
 
+# If we specify the Dockerfile instead of piping it from stdin, new-build will
+# attempt to start the build immediately instead of waiting for the source
+# image to be ready.
+#
 cat ${BASE}/../Dockerfile.openshift \
 | oc new-build \
   --name gotty \
