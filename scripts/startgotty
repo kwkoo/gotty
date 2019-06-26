@@ -4,4 +4,5 @@ sed -e 's/user:x:1001:0:\(.*\)/demo:x:'"$UID:$(id -g)"':\1/' /etc/passwd > /tmp/
 cp /tmp/passwd /etc/
 rm /tmp/passwd
 
+export TERM=xterm
 exec /usr/local/bin/gotty -w $OPTIONS /bin/bash
