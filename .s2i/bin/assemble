@@ -9,6 +9,6 @@ cd /opt/app-root/src/go/src/github.com/yudai/gotty
 echo "Starting build..."
 CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /opt/app-root/gotty .
 echo "Build completed"
-cp docker/startgotty /opt/app-root/
+cp scripts/startgotty /opt/app-root/
 cd /opt/app-root
 tar -cf bin.tar gotty startgotty
