@@ -8,31 +8,19 @@
 [wercker]: https://app.wercker.com/project/bykey/03b91f441bebeda34f80e09a9f14126f
 [license]: https://github.com/yudai/gotty/blob/master/LICENSE
 
+This is forked from <https://github.com/yudai/gotty>.
+
+It includes scripts to build and run GoTTY on OpenShift.
+
 GoTTY is a simple command line tool that turns your CLI tools into web applications.
 
 ![Screenshot](https://raw.githubusercontent.com/yudai/gotty/master/screenshot.gif)
 
-# Installation
+# Build
 
-Download the latest stable binary file from the [Releases](https://github.com/yudai/gotty/releases) page. Note that the release marked `Pre-release` is built for testing purpose, which can include unstable or breaking changes. Download a release marked [Latest release](https://github.com/yudai/gotty/releases/latest) for a stabale build.
-
-(Files named with `darwin_amd64` are for Mac OS X users)
-
-## Homebrew Installation
-
-You can install GoTTY with [Homebrew](http://brew.sh/) as well.
-
-```sh
-$ brew install yudai/gotty/gotty
-```
-
-## `go get` Installation (Development)
-
-If you have a Go language environment, you can install GoTTY with the `go get` command. However, this command builds a binary file from the latest master branch, which can include unstable or breaking changes. GoTTY requires go1.9 or later.
-
-```sh
-$ go get github.com/yudai/gotty
-```
+````
+oc new-build docker.io/centos/go-toolset-7-centos7~https://github.com/kwkoo/gotty.git --name gotty-builder
+````
 
 # Usage
 

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -e
+
+mkdir -p /opt/app-root/src/go/src/github.com/yudai/gotty
+mv /tmp/src/* /opt/app-root/src/go/src/github.com/yudai/gotty/
+cd /opt/app-root/src/go/src/github.com/yudai/gotty
+
+CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /opt/app-root/gotty .
