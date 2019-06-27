@@ -20,8 +20,6 @@ RUN set -x && \
 FROM centos:7
 LABEL maintainer="glug71@gmail.com"
 LABEL builder=false
-COPY --from=builder /go/bin/${PACKAGE} /usr/local/bin/
-COPY scripts/startgotty /usr/local/bin/
 
 RUN yum update -y \
   && yum install -y git curl vim openssh-clients tmux \
@@ -31,8 +29,12 @@ RUN yum update -y \
   && chmod -R g=u /etc/passwd /home/user \
   && echo "openshift" | passwd user --stdin
 
-USER 1001
 WORKDIR /home/user
 EXPOSE 8080
 
 ENTRYPOINT ["/usr/local/bin/startgotty"]
+
+COPY --from=builder /go/bin/${PACKAGE} /usr/local/bin/
+COPY scripts/startgotty /usr/local/bin/
+
+USER 1001
