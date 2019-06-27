@@ -26,11 +26,12 @@ oc new-build \
   docker.io/centos/go-toolset-7-centos7~https://github.com/kwkoo/gotty.git \
   --name gotty-builder
 
-oc new-build \
+cat ${BASE}/../Dockerfile.openshift \
+| oc new-build \
   --name gotty \
   --source-image=gotty-builder \
-  --source-image-path=/opt/app-root/bin.tar:. \
-  --dockerfile=$'FROM centos:7\nCOPY bin.tar /usr/local/bin/bin.tar\nRUN cd /usr/local/bin && tar -xf bin.tar && rm bin.tar && yum update -y && yum install -y git curl vim nano tmux && yum clean all -y && cd /tmp && curl -o oc.tar.gz https://mirror.openshift.com/pub/openshift-v3/clients/3.11.123/linux/oc.tar.gz && tar -zxf oc.tar.gz && mv oc /usr/local/bin/ && rm -f oc.tar.gz && useradd -m -u 1001 -g 0 user && chown -R 0 /etc/passwd /home/user && chmod -R g=u /etc/passwd /home/user && echo "openshift" | passwd user --stdin\nUSER 1001\nWORKDIR /home/user\nCMD ["/usr/local/bin/startgotty"]\nEXPOSE 8080' \
+  --source-image-path=/opt/app-root/output/.:. \
+  --dockerfile="-" \
   --allow-missing-imagestream-tags \
   --strategy=docker
 ````
